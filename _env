@@ -1,0 +1,4 @@
+APP_PORT=4000
+MONGO_URI=mongodb://localhost:27017/phantom
+MONGO_PORT=27017
+DATABASE_NAME=phantom

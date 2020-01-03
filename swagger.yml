@@ -1,0 +1,272 @@
+openapi: 3.0.0
+
+info:
+  title: Phantom - Exercise 1
+  description: Create simple CRUD Operation
+  version: 1.0.0
+
+paths:
+  /users:
+    get:
+      tags:
+        - users
+      summary: Get all users
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Success"
+                  data: 
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        nik:
+                          type: string
+                          example: "123"
+                        name:
+                          type: string
+                          example: "Muhammad Alfian Rasyidin"
+                        email:
+                          type: string
+                          example: "alfian@lokakarya.co.id"
+        500:
+          $ref: '#/components/responses/InternalError'
+
+    post:
+      tags: 
+        - users
+      summary: Create new user.
+      requestBody:
+        $ref: '#/components/requestBodies/UserCreatePayload'
+      responses:
+        201:
+          $ref: '#/components/responses/Created'
+        400:
+          $ref: '#/components/responses/BadRequest'
+        403:
+          $ref: '#/components/responses/Forbidden'
+        500:
+          $ref: '#/components/responses/InternalError'
+
+  /users/{nik}:
+    get:
+      tags: 
+        - users
+      summary: Get specific user
+      parameters: 
+        - name: nik
+          in: path
+          description: User NIK
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Ok
+          content:
+            application/json:
+              schema:
+                properties:
+                  code:
+                    type: integer
+                    example: 200
+                  message:
+                    type: string
+                    example: "Success"
+                  data: 
+                      type: object
+                      properties:
+                        nik:
+                          type: string
+                          example: "123"
+                        name:
+                          type: string
+                          example: "Muhammad Alfian Rasyidin"
+                        email:
+                          type: string
+                          example: "alfian@lokakarya.co.id"
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalError'
+
+    patch:
+      tags: 
+        - users
+      summary: Edit specific user
+      parameters: 
+        - name: nik
+          in: path
+          description: User NIK
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        $ref: '#/components/requestBodies/UserUpdatePayload'
+      responses:
+        200:
+          $ref: '#/components/responses/Ok'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalError'
+          
+    delete:
+      tags: 
+        - users
+      summary: Delete specific user
+      parameters: 
+        - name: nik
+          in: path
+          description: User NIK
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          $ref: '#/components/responses/Ok'
+        404:
+          $ref: '#/components/responses/NotFound'
+        500:
+          $ref: '#/components/responses/InternalError'
+
+components:
+  requestBodies:
+    UserCreatePayload:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              nik:
+                type: string
+                example: "123"
+              name:
+                type: string
+                example: "Muhammad Alfian Rasyidin"
+              email:
+                type: string
+                example: "alfian@lokakarya.co.id"
+    UserUpdatePayload:
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Muhammad Alfian Rasyidin"
+              email:
+                type: string
+                example: "alfian@lokakarya.co.id"
+
+  responses:
+    Ok:
+      description: Ok
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 200
+              message:
+                type: string
+                example: "Ok"
+    Created:
+      description: Created
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 201
+              message:
+                type: string
+                example: "Created"
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 400
+              message:
+                type: string
+                example: "Bad request"
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            properties:
+              code:
+                type: integer
+                example: 401
+              message:
+                type: string
+                example: "Unauthorized"
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            properties:
+              code:
+                type: integer
+                example: 403
+              message:
+                type: string
+                example: "Forbidden"
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            properties:
+              code:
+                type: integer
+                example: 404                
+              message:
+                type: string
+                example: "Not found"
+    InternalError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            properties:
+              code:
+                type: integer
+                example: 500                
+              message:
+                type: string
+                example: "Internal server error"
+
+  schemas:
+    Users:
+      properties:
+        nik:
+          type: string
+          example: "123"
+        name:
+          type: string
+          example: "Muhammad Alfian Rasyidin"
+        email:
+          type: string
+          example: "alfian@lokakarya.co.id"
